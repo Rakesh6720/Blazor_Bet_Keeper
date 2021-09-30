@@ -1,0 +1,70 @@
+﻿@page "/UserCard"
+    
+        <div style="display: flex; flex-direction: column; border: 2px solid black; padding: 25px; margin: 10px; box-shadow: 3px 4px #888888; border-radius: 10px;">
+            <h3>@name</h3>
+            <ul>
+                <li>Week: @week</li>
+                <li>Team: @team</li>
+                <li>Odds:  @odds</li>
+                <li>Amount: $@amount.ToString("0.##")</li>
+                <li>Win: @win</li>
+                <li style="color: @GetPayout().style">Payout: $@GetPayout().amount.ToString("0.##")</li>
+                <li>balance: $@getBalance().ToString("0.##")</li>
+            </ul>
+        </div>
+    
+
+    @code {
+        [Parameter]
+        public int week { get; set; }
+        [Parameter]
+        public string name { get; set; }
+        [Parameter]
+        public string team { get; set; }
+        [Parameter]
+        public int odds { get; set; }
+        [Parameter]
+        public double amount { get; set; }
+        [Parameter]
+        public bool win { get; set; }
+        private Payout payout;
+        private double balance;
+
+        public class Payout
+        {
+            public double amount { get; set; }
+            public string style { get; set; }
+        }
+
+        private Payout GetPayout()
+        {
+            var payout = new Payout();
+            if (win)
+            {
+                payout.style = "red";
+                payout.amount = amount * 100 / odds;
+                return payout;
+                //return amount * 100 / odds;
+            }
+            else
+            {
+                payout.style = "green";
+                payout.amount = amount;
+                return payout;
+            }
+        }
+
+        private double getBalance()
+        {
+            if (win)
+            {
+                balance = 1000 - (amount * 100 / odds);
+            }
+            else
+            {
+                balance = 1000 - amount;
+            }
+            return balance;
+
+        }
+    }

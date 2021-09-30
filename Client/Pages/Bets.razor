@@ -1,0 +1,41 @@
+﻿@page "/bets"
+<h3>NFL BETS</h3>
+<h5 style="font-style:italic;">(reload for new bets)</h5>
+<div style="display: flex; flex-wrap : wrap; justify-content: space-around">
+    <UserCard name=@GetName() week=4 team="Chiefs" odds=-350 amount=@Amounts["Chiefs"] win=@GetWin()></UserCard>
+    <UserCard name=@GetName() week=4 team="Ravens" odds=-105 amount=@Amounts["Ravens"] win=@GetWin()></UserCard>
+    <UserCard name=@GetName() week=4 team="Bears" odds=-150 amount=@Amounts["Bears"] win=@GetWin()></UserCard>
+    <UserCard name=@GetName() week=4 team="Rams" odds=-200 amount=@Amounts["Rams"] win=@GetWin()></UserCard>
+</div>
+<div style="display: flex; flex-direction: column; margin-top: 2rem;">
+    <p>This page was made with the .NET 5 Blazor Web Assembly Framework.</p><br />
+    <p style="font-style: italic;">&copy; Rakesh Baruah 2021 </p>
+
+</div>
+
+@code {
+    public static Random r = new Random();
+    public static List<string> names = new List<string>() { "Buster Jay", "Naomi Knives", "Carter Looney", "Evelyn de Ville", "Avery Sadley", "DK Houndog" };
+    Dictionary<string, double> Amounts = new() {
+        { "Chiefs", r.NextDouble() * 1000 },
+        { "Ravens", r.NextDouble() * 1000 },
+        { "Bears", r.NextDouble() * 1000 },
+        { "Rams", r.NextDouble() * 1000 }
+    };
+
+    public string GetName()
+    {
+
+        var index = r.Next(0, 4);
+        var name = names[index];
+        names.RemoveAt(index);
+        return name;
+    }
+
+    public bool GetWin()
+    {
+        bool[] arr = { true, false };
+        int index = r.Next(0, 2);
+        return arr[index];
+    }
+}
